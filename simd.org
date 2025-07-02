@@ -41,6 +41,7 @@
        }
    }
    #+end_src
+
    #+RESULTS:
    : 225
    : 0
@@ -63,7 +64,7 @@
 ** ARM Docs
    Not a great start. The Rust documentation barely explains anything, all it does is link to the ARM documentation. But atleast the ARM docs are nice! There is some pseudocode to accompany it too.
 
-   The ARM docs say "Signed Absolute Difference. This instruction subtracts the elements of the vector of the second source SIMD&FP register from the corresponding elements of the first source SIMD&FP register, places the the absolute values of the results into a vector, and writes the vector to the destination SIMD&FP register."
+   The ARM docs say "Signed Absolute Difference. This instruction subtracts the elements of the vector of the second source SIMD&FP register from the corresponding elements of the first source SIMD&FP register, places theabsolute values of the results into a vector, and writes the vector to the destination SIMD&FP register."
 
    Perfect! It does what we want it to, we use it within a function we're writing. We use it as appropriate. 
 ** panic!()
@@ -97,7 +98,7 @@
    : -127
 
 ** Rust Source, Maybe?
-   Again, dutiful and diligent programmers that we are, we might be concerned that this is a bug in Rust! The ARM documentation very clearly states what's supposed to happen, with no mention of UB. Thus, we take a look at the rust-lang/std-arch repository, and try to find the implementation of the intrinsic.
+   A negative number?? But the intrinsic returns absolute values! Again, dutiful and diligent programmers that we are, we might be concerned that this is a bug in Rust! The ARM documentation very clearly states what's supposed to happen, with no mention of UB. Thus, we take a look at the rust-lang/std-arch repository, and try to find the implementation of the intrinsic.
    
    #+begin_src rust :eval never
    pub fn vabdq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
@@ -113,7 +114,7 @@
    }
    #+end_src
 
-   The Rust code seems to use FFI to make a call using LLVM IR! So there's no way the Rust Source is wrong. Frustrated with the hours we spent on this, we sit back and relax, being done for the day.
+   The Rust code seems to use FFI to make a call using LLVM IR! So there's no way the Rust Source is wrong. Frustrated with the hours we spent on this, we sit back and sigh, being done for the day.
    
 ** The Moral of the Story
    :PROPERTIES:
