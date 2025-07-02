@@ -28,7 +28,7 @@
    SIMD stands for Single Instruction, Multiple Data. Vector intrinsics are special functions offered by the compiler, that allow the use of SIMD instructions.
 ** SIMD in Rust
    The core::arch crate (the Rust equivalent of a C library) is responsible for exposing these vendor-specific intrinsics that typically correspond to a single machine instruction.
-   #+begin_src rust :export both
+   #+begin_src rust :exports both
    /// Simple program squares elements in 16 bit chunks.
    use core::arch::x86_64::*;
    fn main() {
@@ -86,7 +86,7 @@
    }
    #+end_src
 
-   #+begin_src bash :dir ./example/ :results output :eval yes :export both
+   #+begin_src bash :dir ./example/ :results output :eval yes :exports both
    cross run --target aarch64-unknown-linux-gnu
    #+end_src
 
