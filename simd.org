@@ -43,8 +43,6 @@
    #+end_src
 
    #+RESULTS:
-   : 225
-   : 0
    
 ** Importance
    :PROPERTIES:
@@ -64,7 +62,7 @@
 ** ARM Docs
    Not a great start. The Rust documentation barely explains anything, all it does is link to the ARM documentation. But atleast the ARM docs are nice! There is some pseudocode to accompany it too.
 
-   The ARM docs say "Signed Absolute Difference. This instruction subtracts the elements of the vector of the second source SIMD&FP register from the corresponding elements of the first source SIMD&FP register, places theabsolute values of the results into a vector, and writes the vector to the destination SIMD&FP register."
+   The ARM docs say "Signed Absolute Difference. This instruction subtracts the elements of the vector of the second source SIMD&FP register from the corresponding elements of the first source SIMD&FP register, places the absolute values of the results into a vector, and writes the vector to the destination SIMD&FP register."
 
    Perfect! It does what we want it to, we use it within a function we're writing. We use it as appropriate. 
 ** panic!()
@@ -92,10 +90,6 @@
    #+end_src
 
    #+RESULTS:
-   : 
-   :   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.88.0 (6b00bc388 2025-06-23)
-   : 
-   : -127
 
 ** Rust Source, Maybe?
    A negative number?? But the intrinsic returns absolute values! Again, dutiful and diligent programmers that we are, we might be concerned that this is a bug in Rust! The ARM documentation very clearly states what's supposed to happen, with no mention of UB. Thus, we take a look at the rust-lang/std-arch repository, and try to find the implementation of the intrinsic.
@@ -133,19 +127,18 @@
    #+end_quote
 
 ** Our Solution
-   While this is still a work in progress, and we are not ready to share it publically in its entirety until it is complete, the intial stages of our approach have been employed in [[https://github.com/cryspen/libcrux/tree/main][cryspen/libcrux]] , the formally verified crypto library (in fstar-helpers/core-models). In it, we have been successfully been able to
+   While this is still a work in progress, and we are not ready to share it publically in its entirety until it is complete, the intial stages of our approach have been employed in [[file:~/github-repos/cryspen-stuff/libcrux/fstar-helpers/core-models/src/lib.rs][cryspen/libcrux]] , the formally verified crypto library(in fstar-helpers/core-models). In it, we have been successfully been able to
    + model the intrinsics used for libcrux.
    + test them against the Rust core implementations.
    + employ them in verification efforts via the [[https://cryspen.com/hax-toolchain/][HAX]] toolchain.
 ** Drawbacks
-   
    There are a few drawbacks to our approach
    + Hax focuses on a pure subset of Rust. Specifically, it does not support raw pointers or mutable arguments, which are used in quite a few of the intrinsics.
    + Currently, F* is the only language that we have incorporated the intrinsics into for verification. However, we are working on changing this!
 ** Further Results
    Despite this, we have achieved some significant results!
    + For x86 architectures, we have testable models for all of the avx2, sse2 and ssse3 intrinsics that are in the pure subset as discussed. Summing up to 200+ intrinsics!
-   + Similarly, for ARM and aarch64 architectures, we have modelled about 200 Neon intrinsics modelled and tested.
+   + Similarly, for ARM and aarch64 architectures, we have modelled about 200 Neon intrinsics with accompanying tests.
    + Most significantly, via the work done for libcrux, we were able to find a bug in some of the intrinsics, with our fix being [[https://github.com/rust-lang/stdarch/pull/1823][successfully merged]]!
    [[file:./pr.png]]
 
