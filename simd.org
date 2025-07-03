@@ -43,6 +43,8 @@
    #+end_src
 
    #+RESULTS:
+   : 225
+   : 0
    
 ** Importance
    :PROPERTIES:
@@ -90,6 +92,10 @@
    #+end_src
 
    #+RESULTS:
+   : 
+   :   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.88.0 (6b00bc388 2025-06-23)
+   : 
+   : -127
 
 ** Rust Source, Maybe?
    A negative number?? But the intrinsic returns absolute values! Again, dutiful and diligent programmers that we are, we might be concerned that this is a bug in Rust! The ARM documentation very clearly states what's supposed to happen, with no mention of UB. Thus, we take a look at the rust-lang/std-arch repository, and try to find the implementation of the intrinsic.
@@ -127,7 +133,7 @@
    #+end_quote
 
 ** Our Solution
-   While this is still a work in progress, and we are not ready to share it publically in its entirety until it is complete, the intial stages of our approach have been employed in [[file:~/github-repos/cryspen-stuff/libcrux/fstar-helpers/core-models/src/lib.rs][cryspen/libcrux]] , the formally verified crypto library(in fstar-helpers/core-models). In it, we have been successfully been able to
+   While this is still a work in progress, and we are not ready to share it publically in its entirety until it is complete, the intial stages of our approach have been employed in [[https://github.com/cryspen/libcrux][cryspen/libcrux]] , the formally verified crypto library(in fstar-helpers/core-models). In it, we have been successfully been able to
    + model the intrinsics used for libcrux.
    + test them against the Rust core implementations.
    + employ them in verification efforts via the [[https://cryspen.com/hax-toolchain/][HAX]] toolchain.
